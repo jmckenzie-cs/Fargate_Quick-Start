@@ -14,7 +14,8 @@ To facilitate quick deployment of recommended CWP resources.
 
 For other deployment methods including, advanced customization and highly automated deployments, please use our official documentation to help meeting your requirements and needs.
 
-Prerequisites
+Prerequisites:
+
 CrowdStrike API Key Pair created with Falcon Images Download (read) and Sensor Download (read) scopes assigned.
 curl installed
 jq installed
@@ -22,6 +23,7 @@ docker installed
 ECS Cluster name
 ECR repository to store Falcon Container Sensor image (optional).
 AWS Required Permissions
+
 ECS:
 
 ecs:ListServices
@@ -30,6 +32,7 @@ ecs:DescribeCluster
 ecs:DescribeServices
 ecs:DescribeTaskDeinition
 ecs:RegisterTaskDeinition
+
 ECR:
 
 ecr:DescribeRepositories
