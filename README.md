@@ -1,20 +1,27 @@
-# Fargate_Quick-Start
+# Fargate Quick-Start
 
-Use this page if you want to deploy Falcon Container Sensor on ECS Fargate environment. This project was intended to help users reduce the effort and complexity of a deployment process.
+[![CrowdStrike](https://img.shields.io/badge/CrowdStrike-Falcon-red)](https://www.crowdstrike.com)
 
-The script will helps you to automate the deployment of our sidecar by 2 different methods:
+Deploy Falcon Container Sensor on ECS Fargate environment with reduced complexity and effort.
 
-Falcon Utility: To patch a container image without the need to interact with Task Definitions;
-Patching utility: To patch a task definition without touching the container image.
+## Overview
 
-To get more details about Falcon Container Sensor, it's dependencies and deployment methods, please use our Official Documentation.
+This project automates sidecar deployment using two methods:
 
-Purpose
+1. **Falcon Utility**: Patch container images without Task Definition interaction
+2. **Patching Utility**: Patch task definitions without container image modification
+
+> For comprehensive details about Falcon Container Sensor, dependencies, and deployment methods, please refer to our [Official Documentation](#).
+
+## Purpose
+
 To facilitate quick deployment of recommended CWP resources.
 
-For other deployment methods including, advanced customization and highly automated deployments, please use our official documentation to help meeting your requirements and needs.
+> For advanced customization and automated deployments, please consult our [official documentation](#).
 
-## ECS:
+## Required Permissions
+
+### ECS Permissions
 - ecs:ListServices
 - ecs:ListTaskDefinitionFamilies
 - ecs:DescribeCluster
@@ -22,33 +29,31 @@ For other deployment methods including, advanced customization and highly automa
 - ecs:DescribeTaskDeinition
 - ecs:RegisterTaskDeinition
 
-## ECR:
+### ECR Permissions
 - ecr:DescribeRepositories
 - ecr:GetAuthorizationToken
 - ecr:BatchGetImage
 - ecr:CreateRepostiroy
 
-# PATCHING UTILITY - PATCHING TASK DEFINITION
+## Patching Utility
 
+### Overview
 The Falcon patching utility runs offline and takes task definition JSON as an input to generate a new task definition JSON file. The new task definition does 2 things:
 
-Injects crowdstrike-falcon-init-container into each task container.
-Makes the Falcon Container sensor the container EntryPoint.
+1. Injects crowdstrike-falcon-init-container into each task container.
+2. Makes the Falcon Container sensor the container EntryPoint.
 
-
-You can have more information on our official documentation.
-
-## Prerequisites
-CrowdStrike API Key Pair created with Falcon Images Download (read) and Sensor Download (read) scopes assigned.
+### Prerequisites
+- CrowdStrike API Key Pair created with Falcon Images Download (read) and Sensor Download (read) scopes assigned.
 - curl installed
 - jq installed
 - docker installed
 - ECS Cluster name
 - ECR repository to store Falcon Container Sensor image (optional).
 
-Installation Workflow
+### Installation Workflow
 
-manual-patch-utility-task-definition:
+#### manual-patch-utility-task-definition
 1. The script will list all ACTIVE task definition from the region you defined;
 2. Type the number representing the task definition you want to patch;
 3. You will be asked if you have an existing ECR repository to store falcon container sensor image or if it should create one for you;
@@ -56,7 +61,7 @@ manual-patch-utility-task-definition:
 5. Then it will patch your task definition with falcon container sensor information and register the new task definition in your AWS account.
 6. The script will also create a local folder containing the original task definition JSON file and the new patched one.
 
-manual-patch-utility-service:
+#### manual-patch-utility-service
 1. The script will list all services running on your ECS cluster;
 2. Type the name of the service you want to patch;
 3. You will be asked if you have an existing ECR repository to store falcon container sensor image or if it should create one for you;
@@ -64,15 +69,14 @@ manual-patch-utility-service:
 5. It collects the associated task definition to the chosen service, patch it with falcon container sensor and register the new task definition in your AWS account.
 6. The script will also create a local folder containing the original task definition JSON file and the new patched one.
 
-automated-patch-utility-cluster:
+#### automated-patch-utility-cluster
 1. The script will list and patch all services running on your ECS cluster;
 2. You will be asked if you have an existing ECR repository to store falcon container sensor image or if it should create one for you;
 3. It will pull the latest image from CrowdStrike's registry and push to your existing/new ECR repository;
 4. It collects the associated task definition from each service, patch it with falcon container sensor and register all new tasks definition in your AWS account.
 5. The script will also create a local folder containing the original task definition JSON file and the new patched one.
 
-Usage
-
+### Usage
 
 manual-patch-utility-task-definition
 ./manual-patch-utility-task-definition.sh -u <client-id> -s <client-secret> -r <aws-region>
